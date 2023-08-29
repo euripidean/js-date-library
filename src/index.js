@@ -4,6 +4,8 @@ const {
   SHORT_MONTHS,
   DAYS,
   SHORT_DAYS,
+  FORMAT_MAP: formatMap,
+  TIME_UNITS: timeUnits,
 } = require("./Constants/constants");
 
 class D {
@@ -77,26 +79,6 @@ class D {
       return this.defaultDate;
     }
 
-    const formatMap = {
-      Y: this.year,
-      y: this.yr,
-      M: this.month,
-      m: this.mon,
-      W: this.day,
-      w: this.dy,
-      D: this.date,
-      d: this.date.toString().replace(/^0+/, ""),
-      H: this.hours,
-      h: this.hours % 12,
-      I: this.mins < 10 ? `0${this.mins}` : this.mins,
-      i: this.mins.toString().replace(/^0+/, ""),
-      S: this.secs < 10 ? `0${this.secs}` : this.secs,
-      s: this.secs.toString().replace(/^0+/, ""),
-      A: this.ampm,
-      a: this.ampm.toLowerCase(),
-      z: this.suffix,
-    };
-
     let formattedDate = "";
     for (let i = 0; i < formatString.length; i++) {
       const char = formatString[i];
@@ -105,11 +87,35 @@ class D {
 
     return formattedDate;
   }
+
+  singularOrPlural(number, unit) {
+    // slice off last character of unit to get singular form
+    return number === 1 ? unit.slice(0, -1) : unit;
+  }
+
+  when() {
+    const now = new Date();
+    const diff = now - this._date;
+    const text = diff < 0 ? "from now" : "ago";
+    const absDiff = Math.abs(diff);
+
+    for (const { unit, divisor } of timeUnits) {
+      if (absDiff > divisor) {
+        const value = Math.floor(absDiff / divisor);
+        return `${value} ${this.singularOrPlural(value, unit)} ${text}`;
+      }
+    }
+    return "Just now";
+  }
 }
 
-const d = new D(2017, 0, 2, 3, 4, 5);
-console.log(d.format()); // 2017 January 02
-console.log(d.format("y/m/d")); // 17/Jan/2
-console.log(d.format("H:I:S")); // 03:04:05
-console.log(d.format("h:i:s")); // 3:4:5
-console.log(d.format("Y-M-D h:I:S")); // 2017-January-02 3:04:05
+const d = new D(2019, 0, 2, 3, 4, 5);
+console.log(d.when()); // 6 months ago
+const d1 = new D(2019, 9, 2, 3, 4, 5);
+console.log(d1.when()); // 3 months from now
+const d2 = new D(2024, 9, 2, 3, 4, 5);
+console.log(d2.when()); // 5 years from now
+const d3 = new D(2019, 6, 30, 3, 4, 5);
+console.log(d3.when()); // 3 days from now
+const d4 = new D();
+console.log(d4.when()); // today
