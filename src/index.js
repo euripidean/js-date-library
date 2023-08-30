@@ -1,10 +1,8 @@
-// import constants from './constants';
 const {
   MONTHS,
   SHORT_MONTHS,
   DAYS,
   SHORT_DAYS,
-  FORMAT_MAP: formatMap,
   TIME_UNITS: timeUnits,
 } = require("./Constants/constants");
 
@@ -149,6 +147,26 @@ class D {
       return this.defaultDate;
     }
 
+    const formatMap = {
+      Y: this.year,
+      y: this.yr,
+      M: this.month,
+      m: this.mon,
+      W: this.day,
+      w: this.dy,
+      D: this.date,
+      d: this.date.toString().replace(/^0+/, ""),
+      H: this.hours,
+      h: this.hours % 12,
+      I: this.mins < 10 ? `0${this.mins}` : this.mins,
+      i: this.mins.toString().replace(/^0+/, ""),
+      S: this.secs < 10 ? `0${this.secs}` : this.secs,
+      s: this.secs.toString().replace(/^0+/, ""),
+      A: this.ampm,
+      a: this.ampm.toLowerCase(),
+      z: this.suffix,
+    };
+
     let formattedDate = "";
     for (let i = 0; i < formatString.length; i++) {
       const char = formatString[i];
@@ -190,13 +208,4 @@ class D {
   }
 }
 
-const d = new D(2019, 0, 2, 3, 4, 5);
-console.log(d.when()); // 6 months ago
-const d1 = new D(2019, 9, 2, 3, 4, 5);
-console.log(d1.when()); // 3 months from now
-const d2 = new D(2024, 9, 2, 3, 4, 5);
-console.log(d2.when()); // 5 years from now
-const d3 = new D(2019, 6, 30, 3, 4, 5);
-console.log(d3.when()); // 3 days from now
-const d4 = new D();
-console.log(d4.when()); // today
+module.exports = D;
