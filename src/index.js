@@ -13,49 +13,108 @@ class D {
     this._date = new Date(...args);
   }
 
+  /**
+   * year
+   * @returns {number} year eg 2019
+   */
   get year() {
     return this._date.getFullYear();
   }
+
+  /**
+   * yr
+   * @returns {number} year eg 19
+   */
 
   get yr() {
     return this._date.getFullYear() % 100;
   }
 
+  /**
+   * month
+   * @returns {string} month eg January
+   */
+
   get month() {
     return MONTHS[this._date.getMonth()];
   }
+
+  /**
+   * mon
+   * @returns {string} month eg Jan
+   */
 
   get mon() {
     return SHORT_MONTHS[this._date.getMonth()];
   }
 
+  /**
+   * day
+   * @returns {string} day eg Monday
+   */
+
   get day() {
     return DAYS[this._date.getDay()];
   }
+
+  /**
+   * dy
+   * @returns {string} day eg Mon
+   */
 
   get dy() {
     return SHORT_DAYS[this._date.getDay()];
   }
 
+  /**
+   * date
+   * @returns {number} date eg 1
+   */
+
   get date() {
     return this._date.getDate();
   }
+
+  /**
+   * hours
+   * @returns {number} hours eg 1
+   */
 
   get hours() {
     return this._date.getHours();
   }
 
+  /**
+   * mins
+   * @returns {number} mins eg 23
+   * */
+
   get mins() {
     return this._date.getMinutes();
   }
+
+  /**
+   * secs
+   * @returns {number} secs eg 58
+   */
 
   get secs() {
     return this._date.getSeconds();
   }
 
+  /**
+   * ampm
+   * @returns {string} AMP or PM according to time
+   */
+
   get ampm() {
     return this.hours >= 12 ? "PM" : "AM";
   }
+
+  /**
+   * suffix
+   * @returns {string} suffix for date eg 1st
+   */
 
   get suffix() {
     if (this.date % 10 === 1) {
@@ -70,9 +129,20 @@ class D {
     return "th";
   }
 
+  /**
+   * defaultDate
+   * @returns {string} year month date
+   */
+
   get defaultDate() {
     return `${this.year} ${this.month} ${this.date}`;
   }
+
+  /**
+   * format
+   * @param {string} formatString
+   * @returns {string} formatted date according to formatString eg 2019-01-01
+   * */
 
   format(formatString) {
     if (!formatString) {
@@ -88,10 +158,21 @@ class D {
     return formattedDate;
   }
 
+  /**
+   * singularOrPlural
+   * @param {number} number
+   * @param {string} unit
+   * @returns {string} plural or singular unit eg 1 year or 2 years
+   */
+
   singularOrPlural(number, unit) {
-    // slice off last character of unit to get singular form
     return number === 1 ? unit.slice(0, -1) : unit;
   }
+
+  /**
+   * when
+   * @returns {string} time elapsed eg 1 year ago
+   * */
 
   when() {
     const now = new Date();
