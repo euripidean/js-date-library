@@ -103,4 +103,58 @@ describe("D class", () => {
       expect(d2.suffix).toBe("th");
     });
   });
+  describe("format", () => {
+    test("should return the date in the format specified (Year, Month, Date)", () => {
+      const d = new D("2023-01-01");
+      expect(d.format("Y-M-D")).toBe("2023-January-01");
+    });
+
+    test("should return the date in the format specified (Short Year, Short Month, Short Date)", () => {
+      const d = new D("2023-01-01");
+      expect(d.format("y-m-d")).toBe("23-Jan-1");
+    });
+
+    test("should return the date in 12-hour format (Hour, Minute, Second)", () => {
+      const d = new D("2023-01-01T15:30:45");
+      expect(d.format("H:I:S A")).toBe("15:30:45 PM");
+    });
+
+    test("should return the date in 12-hour format with lowercase am/pm (Hour, Minute, Second)", () => {
+      const d = new D("2023-01-01T09:15:05");
+      expect(d.format("h:i:s a")).toBe("9:15:5 am");
+    });
+
+    test("should return the date with a suffix (Suffix)", () => {
+      const d = new D("2023-01-01");
+      expect(d.format("z")).toBe("st");
+    });
+
+    test("should return the date with the default format when no format string is provided", () => {
+      const d = new D("2023-01-01");
+      expect(d.format()).toBe(d.defaultDate);
+    });
+  });
+
+  describe("when", () => {
+    test("Should return how many years, months and days since a past event", () => {
+      const firstDate = new Date("2023-09-02");
+      const d = new D("2022-01-01");
+      expect(d.when(firstDate)).toBe("1 year 8 months 4 days ago.");
+    });
+    test("Should return how many months and days until a future event", () => {
+      const firstDate = new Date("2023-09-02");
+      const d = new D("2024-01-01");
+      expect(d.when(firstDate, true)).toBe("4 months 1 day from now.");
+    });
+    test("Should return 'just now' if the date is less than one second difference", () => {
+      const firstDate = new Date("2023-09-02T10:00:00");
+      const d = new D("2023-09-02T10:00:00");
+      expect(d.when(firstDate)).toBe("Just now");
+    });
+    test("Should return number of seconds if the date is less than one minute difference", () => {
+      const firstDate = new Date("2023-09-02T10:00:00");
+      const d = new D("2023-09-02T10:00:05");
+      expect(d.when(firstDate)).toBe("5 seconds from now.");
+    });
+  });
 });

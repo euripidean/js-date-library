@@ -154,12 +154,12 @@ class D {
       m: this.mon,
       W: this.day,
       w: this.dy,
-      D: this.date,
-      d: this.date.toString().replace(/^0+/, ""),
+      D: this.date < 10 ? `0${this.date}` : this.date,
+      d: this.date,
       H: this.hours,
       h: this.hours % 12,
       I: this.mins < 10 ? `0${this.mins}` : this.mins,
-      i: this.mins.toString().replace(/^0+/, ""),
+      i: this.mins,
       S: this.secs < 10 ? `0${this.secs}` : this.secs,
       s: this.secs.toString().replace(/^0+/, ""),
       A: this.ampm,
@@ -192,17 +192,28 @@ class D {
    * @returns {string} time elapsed eg 1 year ago
    * */
 
-  when() {
-    const now = new Date();
+  when(now = new Date()) {
     const diff = now - this._date;
     const text = diff < 0 ? "from now" : "ago";
-    const absDiff = Math.abs(diff);
+    let absDiff = Math.abs(diff);
+    let result = "";
+    let timeUnitsUsed = 0;
 
     for (const { unit, divisor } of timeUnits) {
-      if (absDiff > divisor) {
+      if (absDiff >= divisor) {
         const value = Math.floor(absDiff / divisor);
-        return `${value} ${this.singularOrPlural(value, unit)} ${text}`;
+        result += `${value} ${this.singularOrPlural(value, unit)} `;
+        absDiff %= divisor;
+        timeUnitsUsed += 1;
+
+        if (timeUnitsUsed === 3) {
+          break;
+        }
       }
+    }
+
+    if (result) {
+      return `${result.trim()} ${text}.`;
     }
     return "Just now";
   }
