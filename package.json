@@ -1,6 +1,6 @@
 {
   "name": "@euripidean/js-date-library",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "[School Assignment] JS Library to manipulate dates",
   "main": "index.js",
   "directories": {
