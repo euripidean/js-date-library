@@ -6,8 +6,8 @@
 
 [![npm version](https://img.shields.io/npm/v/@euripidean/js-date-library)](https://www.npmjs.com/package/@euripidean/js-date-library)
 [![GitHub license](https://img.shields.io/github/license/@euripidean/js-date-library)](https://github.com/euripidean/js-date-library/blob/main/LICENSE)
-[![npm package size](https://img.shields.io/bundlephobia/min/@euripidean/js-date-library)](https://www.npmjs.com/package/@euripidean/js-date-library)
-[![GitHub issues](https://img.shields.io/github/issues/@euripidean/js-date-library)](https://github.com/euripidean/js-date-library/issues)
+[(![npm bundle size](https://img.shields.io/bundlephobia/min/%40euripidean%2Fjs-date-library)](https://www.npmjs.com/package/@euripidean/js-date-library)
+![GitHub issues](https://img.shields.io/github/issues/euripidean/js-date-library)
 
 ## Introduction
 
